@@ -144,6 +144,9 @@ bool UNBbeeClass::waitForOK(uint16_t timeout)
     if (strcmp_P(_UNBBEE_buffer, PSTR("OK")) == 0) {
       return true;
     }
+    if (strcmp_P(_UNBBEE_buffer, PSTR("ERROR")) == 0) {
+      return false;
+    }
     // Other input is skipped.
   }
   return false;         // This indicates: timed out
@@ -260,6 +263,19 @@ bool UNBbeeClass::getStrValue(const char *cmd, char * reply, size_t size, uint32
   }
   // Wait for "OK"
   return waitForOK();
+}
+
+/*!
+ * Send message (AT$SS)
+ */
+bool UNBbeeClass::sendMessage(const char * msg)
+{
+  switchEchoOff();
+  sendCommandProlog();
+  sendCommandAdd_P(PSTR("AT$SS="));
+  sendCommandAdd(msg);
+  sendCommandEpilog();
+  return waitForOK(20000);
 }
 
 /*!

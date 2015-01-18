@@ -22,6 +22,7 @@ public:
   void setDiag(Stream &stream) { _diagStream = &stream; }
   void setDiag(Stream *stream) { _diagStream = stream; }
 
+  bool sendMessage(const char *msg);
   bool getDeviceID(char *buffer, size_t buflen);
 
 private:
